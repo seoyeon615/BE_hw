@@ -6,15 +6,23 @@
     <title>문서 제목</title>
   </head>
   <body>
+
     <form action="{% url 'wordcount:index' %}" method="get">
       <input type="submit" value="index 페이지로 가기" />
     </form>
-    <h1>Word Count</h1>
 
-    <form action="{% url 'wordcount:result' %}" method="get">
-      <textarea name="fulltext" cols="40" rows="20"></textarea>
-      <br />
-      <input type="submit" value="Count!" />
-    </form>
+    <from>
+    {% if name %}
+        <h1>안녕하세요, {{ name }}님!</h1>
+    {% else %}
+        <h1>안녕하세요!</h1>
+{% endif %}
+    <from/>
+
+<br><br>
+
+<form action="{% url 'wordcount:index' %}" method="get">
+    <input type="submit" value="다시 입력">
+</form>
   </body>
 </html>
