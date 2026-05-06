@@ -10,14 +10,13 @@ def list(request):
 def list(request):
     categories = Category.objects.all()
     category_id = request.GET.get('category')
-
+    
     if category_id:
-        category = get_object_or_404(Category, id=category_id)
-        posts = category.posts.all().order_by('-id')
+        posts = Post.objects.filter(category__id=category_id).order_by('-id')
     else:
         posts = Post.objects.all().order_by('-id')
-
-    return render(request, 'blog/list.html', {'posts':posts, 'categories':categories})
+        
+    return render(request, "blog/list.html", {'posts': posts, 'categories': categories})
 
 @login_required
 def create(request):
@@ -95,9 +94,9 @@ def create_comment(request,post_id):
 def like(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     user = request.user
-
-    if user in post.like.all():
-        post.like.remove(user)
+    
+    if post in user.like_posts.all():
+        user.like_posts.remove(post)
     else:
-        post.like.add(user)
-    return redirect('blog:detail', post_id)
+        user.like_posts.add(post)
+    return redirect('blog:detail', post_id)  
